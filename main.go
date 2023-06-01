@@ -1,26 +1,22 @@
 package main
 
 import (
-	"github.com/jinzhu/gorm"
+	"main/common/db"
+	"main/common/table"
+
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
-type Product struct {
-	gorm.Model
-	Code  string
-	Price uint
-}
-
 func main() {
-	db, err := Connect()
+	datab, err := db.Connect()
 	if err != nil {
 		panic("连接数据库失败")
 	}
-	defer db.Close()
+	defer datab.Close()
 	// 自动迁移模式
-	db.AutoMigrate(&Product{})
+	datab.AutoMigrate(&table.Product{})
 	// 插入
-	insert(db)
+	db.Insert(datab)
 	// 读取
 	//var product Product
 	//read(db,&product)
